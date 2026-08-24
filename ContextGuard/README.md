@@ -1,52 +1,52 @@
-# Context Guard
+# Context GuardBlock
 
-A hackathon project that gives people gentle, factual context on Islamophobic
-tropes and misinformation *before* they post or right after someone else
-posts — without ever blocking, deleting, or censoring content.
+A hackathon project that gives people gentle, factual context on IslamophobicBlockBlock
+tropes and misinformation *before* they post or right after someone elseBlockBlock
+posts — without ever blocking, deleting, or censoring content.BlockBlock
 
-Two front-ends, one shared AI backend:
+Two front-ends, one shared AI backend:BlockBlock
 
-- **Browser extension** — watches text boxes on X and Telegram Web (and can
-  easily be extended to any site) and shows an inline nudge as you type.
-- **Telegram bot** — sits in a group chat and quietly replies with context
-  when it sees a flagged pattern.
+- **Browser extension** — watches text boxes on X and Telegram Web (and canBlockBlock
+  easily be extended to any site) and shows an inline nudge as you type.BlockBlock
+- **Telegram bot** — sits in a group chat and quietly replies with contextBlockBlock
+  when it sees a flagged pattern.BlockBlock
 
-## Two versions of the browser extension
+## Two versions of the browser extensionBlockBlockBlockBlockBlock
 
-- **`extension/`** — the original, outbound-only nudge tool. Checks your
-  own drafts before you post. Never blocks anything.
-- **`extension-unified/`** — merges in a second project, **Islamophobia
-  Shield**, which blurs Islamophobic content in what you're *reading*
-  (with a one-click, fully reversible "Show post anyway"). The two modules
-  share the same AI backend — Shield's regex-based detection can optionally
-  be topped up by the same classifier the nudge tool uses, for posts its
-  wordlist misses. See `extension-unified/README.md` for the full writeup,
-  including an honest note on reconciling "nudge, don't block" with a tool
-  that does block by default (reversibly).
+- **`extension/`** — the original, outbound-only nudge tool. Checks yourBlockBlock
+  own drafts before you post. Never blocks anything.BlockBlock
+- **`extension-unified/`** — merges in a second project, **IslamophobiaBlockBlock
+  Shield**, which blurs Islamophobic content in what you're *reading*BlockBlock
+  (with a one-click, fully reversible "Show post anyway"). The two modulesBlock
+  share the same AI backend — Shield's regex-based detection can optionallyBlock
+  be topped up by the same classifier the nudge tool uses, for posts itsBlock
+  wordlist misses. See `extension-unified/README.md` for the full writeup,Block
+  including an honest note on reconciling "nudge, don't block" with a toolBlock
+  that does block by default (reversibly).Block
 
-Use `extension/` for the simpler outbound-only demo; use
-`extension-unified/` if you want both directions — writing and reading —
-in one install.
+Use `extension/` for the simpler outbound-only demo; useBlock
+`extension-unified/` if you want both directions — writing and reading —Block
+in one install.Block
 
-## How it works
+## How it worksBlockBlockBlockBlock
 
-1. User types something in a monitored text box (extension) or sends a
-   message in a Telegram group (bot).
-2. After a short debounce, the text is sent to the backend `/analyze`
+1. User types something in a monitored text box (extension) or sends aBlock
+   message in a Telegram group (bot).Block
+2. After a short debounce, the text is sent to the backend `/analyze`Block
    endpoint.
-3. The backend asks Gemini (free tier) to classify the text *only* for
-   Islamophobic tropes/dehumanization/misinformation — not general
+3. The backend asks Gemini (free tier) to classify the text *only* forBlock
+   Islamophobic tropes/dehumanization/misinformation — not generalBlock
    moderation.
-4. If flagged with reasonable confidence, the user sees a short, sourced
-   explanation. Nothing is ever removed or blocked — this is context, not
+4. If flagged with reasonable confidence, the user sees a short, sourcedBlock
+   explanation. Nothing is ever removed or blocked — this is context, notBlock
    censorship.
 
-## Project structure
+## Project structureBlock
 
 ```
 islamophobia-guard/
-├── backend/          Express server, calls the Anthropic API
-├── extension/         Manifest V3 browser extension (X + Telegram Web)
+├── backend/          Express server, calls the Anthropic APIBlockBlockBlockBlockBlock
+├── extension/         Manifest V3 browser extension (X + Telegram Web)BlockBlockBlockBlockBlock
 └── telegram-bot/      Telegram bot using the same backend
 ```
 
