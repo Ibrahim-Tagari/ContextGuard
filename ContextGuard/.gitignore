@@ -1,0 +1,41 @@
+# --- Secrets — never commit these ---
+.env
+.env.local
+*.env
+!.env.example
+
+# --- Node.js (backend/, telegram-bot/) ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json.bak
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Editor/IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Logs ---
+*.log
+logs/
+
+# --- Build/output artifacts ---
+dist/
+build/
+*.tsbuildinfo
+
+# --- Extension packaging (if you zip the extension for submission) ---
+*.zip
+*.crx
+*.pem
+
+# --- Backend/local test artifacts ---
+coverage/
+.cache/

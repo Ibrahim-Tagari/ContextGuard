@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Context Guard — Options & About</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 680px;
+      margin: 40px auto;
+      padding: 0 20px;
+      color: #24303a;
+      line-height: 1.55;
+    }
+    h1 { font-size: 22px; margin-bottom: 2px; }
+    .version { color: #6b7885; font-size: 13px; margin-bottom: 28px; }
+    h2 { font-size: 15px; margin-top: 30px; }
+    .policy-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 13.5px;
+    }
+    .policy-table th, .policy-table td {
+      border: 1px solid #e2e6ea;
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .policy-table th { background: #f6f8fa; }
+    .block-tag { color: #b3261e; font-weight: 700; }
+    ul { padding-left: 20px; }
+
+    .override-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid #e2e6ea;
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      font-size: 12.5px;
+    }
+    .state-tag {
+      flex-shrink: 0;
+      font-weight: 700;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .state-tag.block { background: #fdf2f2; color: #b3261e; }
+    .state-tag.allow { background: #eef5fb; color: #205a8a; }
+    .snippet {
+      flex: 1;
+      color: #4a4a4a;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .override-row button {
+      flex-shrink: 0;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid #cfd6dc;
+      background: #fff;
+      cursor: pointer;
+    }
+    .override-row button:hover { background: #f6f8fa; }
+    .empty-state {
+      font-size: 12.5px;
+      color: #6b7885;
+      padding: 14px 0;
+    }
+    #clearAllBtn {
+      margin-top: 10px;
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #b3261e;
+      color: #b3261e;
+      background: #fff;
+      cursor: pointer;
+      display: none;
+    }
+    #clearAllBtn:hover { background: #b3261e; color: #fff; }
+
+    footer { margin-top: 36px; font-size: 12px; color: #6b7885; }
+  </style>
+</head>
+<body>
+  <h1>Context Guard</h1>
+  <div class="version">Prototype build — v0.3.0</div>
+
+  <h2>What gets blocked</h2>
+  <table class="policy-table">
+    <tr>
+      <th>Category</th>
+      <th>Examples</th>
+      <th>Action</th>
+    </tr>
+    <tr>
+      <td><span class="block-tag">Hate speech</span></td>
+      <td>Direct slurs, dehumanizing comparisons, explicit incitement</td>
+      <td>Blocked (blurred, one-click reveal)</td>
+    </tr>
+    <tr>
+      <td><span class="block-tag">Islamophobic content</span></td>
+      <td>Conspiracy narratives ("Great Replacement"), sweeping
+          generalizations, delegitimizing claims about Islam</td>
+      <td>Blocked (blurred, one-click reveal)</td>
+    </tr>
+  </table>
+  <p>
+    Both categories are blocked by default. You can turn either off from
+    the popup if you'd rather it left alone entirely.
+  </p>
+
+  <h2>Manual block/unblock</h2>
+  <p>
+    You're always the final word on any individual post: right-click it →
+    <strong>Block this content</strong> or <strong>Unblock this content</strong>.
+    That choice is saved and reapplied automatically if the extension sees
+    the same text again — including reversing something it auto-blocked
+    incorrectly.
+  </p>
+  <div id="overrideList"></div>
+  <button id="clearAllBtn">Clear all overrides</button>
+
+  <h2>Where this runs</h2>
+  <p>
+    The content script runs on every site you visit (not just named social
+    platforms) so it can catch comment sections on any site, not only the
+    handful with hand-tuned support. On unfamiliar sites it falls back to a
+    generic heuristic scan rather than a site-specific one, so accuracy
+    will vary more there than on the sites it's been tuned for.
+  </p>
+
+  <h2>Known limitations</h2>
+  <ul>
+    <li>Detection is regex/pattern-based, not a trained classifier — it will
+        miss coded language and can misfire on quotes, news reporting, or
+        counter-speech, despite the context guards in place.</li>
+    <li>The wordlist is a small starter set. It needs to be built out from a
+        vetted hate-speech lexicon, with review from affected communities,
+        before this should be trusted beyond testing.</li>
+    <li>The generic (non-hand-tuned) scanner is a rough heuristic and will
+        both miss real posts and occasionally grab the wrong chunk of a
+        page on unfamiliar site layouts.</li>
+  </ul>
+
+  <h2>Data &amp; privacy</h2>
+  <p>
+    All detection runs locally in your browser. No page content is sent
+    anywhere. Settings, counts, and your manual block/unblock choices are
+    stored only in your browser's local extension storage.
+  </p>
+
+  <footer>
+    See the project README for architecture details and how to extend the
+    wordlist or add a classifier for ambiguous cases.
+  </footer>
+
+  <script src="options.js"></script>
+</body>
+</html>

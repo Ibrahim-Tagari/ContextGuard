@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Context Guard",
+  "version": "2.0.0",
+  "description": "Context before you post, and a reversible shield for what you read — one extension, two directions, built on the same AI classifier.",
+  "permissions": ["storage", "contextMenus", "activeTab"],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*",
+    "file:///*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*", "https://web.telegram.org/*", "https://www.instagram.com/*"],
+      "js": ["content-outbound.js"],
+      "css": ["content-outbound.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["http://*/*", "https://*/*", "file:///*"],
+      "js": ["data/wordlist.js", "data/replies.js", "content-inbound.js"],
+      "css": ["content-inbound.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Context Guard"
+  },
+  "options_page": "options.html",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

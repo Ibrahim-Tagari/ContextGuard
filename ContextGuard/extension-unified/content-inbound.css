@@ -1,0 +1,192 @@
+.hsd-wrapper {
+  position: relative;
+  /* New stacking context so our z-index is judged relative to this post,
+     not fighting the host page's own header/dropdown/modal z-indexes. */
+  isolation: isolate;
+}
+
+.hsd-inner {
+  transition: filter 0.15s ease;
+  /* Grown via JS (ensureFitsCard) when the post is shorter than the
+     warning card, so the card never has to spill outside its own post
+     and overlap the next one in the feed. */
+  box-sizing: border-box;
+}
+
+.hsd-blurred {
+  filter: blur(8px);
+  user-select: none;
+  pointer-events: none;
+}
+
+.hsd-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2147483000;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.hsd-card {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #fdf2f2;
+  border: 1px solid #e8a3a3;
+  border-radius: 10px;
+  max-width: 92%;
+  box-sizing: border-box;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #3a2323;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.14);
+  overflow: hidden;
+}
+
+/* Collapsed by default: a compact pill naming the reason, confined to the
+   blurred area rather than a big block of always-visible text. */
+.hsd-card-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.hsd-card-toggle:hover {
+  background: rgba(179, 38, 30, 0.06);
+}
+
+.hsd-card-icon {
+  flex: none;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.hsd-card-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 700;
+  color: #b3261e;
+  font-size: 12.5px;
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hsd-card-chevron {
+  flex: none;
+  font-size: 11px;
+  color: #b3261e;
+  transition: transform 0.15s ease;
+}
+
+.hsd-card-expanded .hsd-card-chevron {
+  transform: rotate(180deg);
+}
+
+/* Dropdown panel: hidden until the badge is clicked, then holds the full
+   explanation. word-break/overflow-wrap keep long unbroken text (links,
+   etc.) from pushing the card wider than the blurred area it sits over. */
+.hsd-card-details {
+  padding: 0 12px 12px;
+  border-top: 1px solid #f0d3d3;
+  margin-top: 0;
+}
+
+.hsd-card-details[hidden] {
+  display: none;
+}
+
+.hsd-card-message {
+  color: #4a3232;
+  padding-top: 10px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.hsd-reveal-btn {
+  margin-top: 10px;
+  display: block;
+  border: 1px solid #b3261e;
+  background: transparent;
+  color: #b3261e;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.hsd-reveal-btn:hover {
+  background: #b3261e;
+  color: #fff;
+}
+
+/* Manual "Block" hover control on untouched posts */
+.hsd-corner-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 2147482999;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid #d0d6db;
+  background: #ffffff;
+  color: #56636e;
+  border-radius: 6px;
+  padding: 3px 8px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+}
+.hsd-corner-btn:hover { border-color: #b3261e; color: #b3261e; }
+
+.hsd-corner-btn-hover {
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.hsd-scanned-clean {
+  position: relative;
+  isolation: isolate;
+}
+.hsd-scanned-clean:hover .hsd-corner-btn-hover {
+  opacity: 1;
+}
+
+/* "Allowed by you" pill on posts the user explicitly unblocked */
+.hsd-allowed-pill {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 11.5px;
+  color: #2e7d4f;
+  background: #eaf7ef;
+  border: 1px solid #a9d9bb;
+  border-radius: 6px;
+  padding: 5px 10px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+}
+
+.hsd-undo-link {
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  color: #2e7d4f;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}

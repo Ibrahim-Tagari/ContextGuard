@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    :root {
+      --ink: #14172B;
+      --muted: #6b7885;
+      --border: #e2e6ea;
+      --indigo: #1B1F3B;
+      --amber: #F2A93B;
+      --block: #b3261e;
+      --mint: #4FD1AE;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      width: 320px;
+      margin: 0;
+      padding: 16px;
+      color: var(--ink);
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    header img { width: 22px; height: 22px; border-radius: 5px; }
+    h1 { font-size: 14.5px; margin: 0; font-weight: 700; }
+    .subtitle { font-size: 11.5px; color: var(--muted); margin: 0 0 14px; }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+      background: #f2f3f7;
+      border-radius: 8px;
+      padding: 3px;
+    }
+    .tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 7px 4px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .tab-btn.active { background: var(--indigo); color: #fff; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .stats { display: flex; gap: 8px; margin-bottom: 14px; }
+    .stat { flex: 1; border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; text-align: center; }
+    .stat .num { font-size: 18px; font-weight: 700; color: var(--block); }
+    .stat .lbl { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+    .section { border-top: 1px solid var(--border); padding-top: 12px; margin-top: 12px; }
+    .toggle-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+    .toggle-row .text { flex: 1; }
+    .toggle-row .title { font-size: 12.5px; font-weight: 600; }
+    .toggle-row .desc { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
+
+    .switch { position: relative; display: inline-block; width: 34px; height: 20px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background: #cfd6dc; border-radius: 20px; transition: 0.15s; }
+    .slider:before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.15s; }
+    input:checked + .slider { background: var(--indigo); }
+    input:checked + .slider:before { transform: translateX(14px); }
+
+    label.field { display: block; font-size: 11.5px; color: var(--muted); margin-bottom: 4px; margin-top: 10px; }
+    input[type="text"] {
+      width: 100%; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--border);
+      font-size: 12px; font-family: inherit;
+    }
+    .save-btn {
+      width: 100%; margin-top: 10px; padding: 7px; border-radius: 6px; border: none;
+      background: var(--amber); color: var(--indigo); font-weight: 700; font-size: 12.5px; cursor: pointer;
+    }
+
+    .tip {
+      font-size: 11px; color: var(--muted); background: #f6f8fa; border-radius: 6px;
+      padding: 8px 10px; margin-top: 12px; line-height: 1.4;
+    }
+    footer { margin-top: 10px; font-size: 10.5px; color: var(--muted); line-height: 1.4; }
+    footer a { color: var(--indigo); }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="icons/icon48.png" alt="" />
+    <h1>Context Guard</h1>
+  </header>
+  <p class="subtitle">Context before you post. A reversible shield for what you read.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="outbound">Before you post</button>
+    <button class="tab-btn" data-tab="inbound">While you read</button>
+  </div>
+
+  <!-- OUTBOUND PANEL -->
+  <div class="panel active" id="panel-outbound">
+    <div class="toggle-row">
+      <div class="text">
+        <div class="title">Nudge before posting</div>
+        <div class="desc">Checks your own drafts on X, Telegram Web, and Instagram before you post.</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="outboundEnabled" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <label class="field" for="backendUrl">Backend URL</label>
+    <input type="text" id="backendUrl" placeholder="http://localhost:3000" />
+    <button class="save-btn" id="saveBackend">Save</button>
+    <div class="tip">Nudges only — nothing you write is ever blocked or deleted. You always choose what to post.</div>
+  </div>
+
+  <!-- INBOUND PANEL -->
+  <div class="panel" id="panel-inbound">
+    <div class="stats">
+      <div class="stat">
+        <div class="num" id="blockedCount">0</div>
+        <div class="lbl">Auto-blurred</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="manualBlockedCount">0</div>
+        <div class="lbl">Blurred by you</div>
+      </div>
+    </div>
+
+    <div class="toggle-row">
+      <div class="text">
+        <div class="title">Enabled</div>
+        <div class="desc">Turn read-side detection on or off on this device.</div>
+      </div>
+      <label class="switch"><input type="checkbox" id="enabled" /><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <div class="text">
+        <div class="title">Block hate speech</div>
+        <div class="desc">Direct slurs and dehumanizing attacks.</div>
+      </div>
+      <label class="switch"><input type="checkbox" id="blockHateSpeech" /><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <div class="text">
+        <div class="title">Block Islamophobic content</div>
+        <div class="desc">Conspiracy tropes, generalizations, delegitimizing claims.</div>
+      </div>
+      <label class="switch"><input type="checkbox" id="blockIslamophobicContent" /><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <div class="text">
+        <div class="title">Strict mode</div>
+        <div class="desc">Also acts on lower-confidence, coded phrasing.</div>
+      </div>
+      <label class="switch"><input type="checkbox" id="strictMode" /><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <div class="text">
+        <div class="title">AI-assist (beta)</div>
+        <div class="desc">Backs up the wordlist with the same AI classifier used before-you-post, for curated posts the regex misses. Uses your backend URL from the other tab.</div>
+      </div>
+      <label class="switch"><input type="checkbox" id="aiAssist" /><span class="slider"></span></label>
+    </div>
+
+    <div class="tip">
+      Right-click any post → <strong>Block this content</strong> or <strong>Unblock this content</strong> to correct the detector manually. Every blur is reversible — nothing is deleted.
+    </div>
+  </div>
+
+  <footer>
+    Prototype — not a certified classifier.
+    <a href="options.html" target="_blank">Options, policy &amp; your overrides</a>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

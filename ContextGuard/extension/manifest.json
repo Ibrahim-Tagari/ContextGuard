@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Context Guard",
+  "version": "1.0.0",
+  "description": "Gives gentle, factual context on Islamophobic tropes before you post — never blocks, just nudges.",
+  "permissions": ["storage", "activeTab"],
+  "host_permissions": ["http://localhost:3000/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Context Guard"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://x.com/*",
+        "https://twitter.com/*",
+        "https://web.telegram.org/*",
+        "https://www.instagram.com/*",
+        "https://web.snapchat.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

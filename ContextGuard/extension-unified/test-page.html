@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Context Guard — Test Page</title>
+  <style>
+    body { font-family: sans-serif; max-width: 640px; margin: 40px auto; }
+    article, .generic-post {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    .expect {
+      font-size: 12px;
+      color: #888;
+      margin: -8px 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Test feed</h2>
+  <p>Load the extension unpacked, enable file access, then open this file directly.
+     Posts marked "generic markup" use plain &lt;div&gt;s (no &lt;article&gt; tag) to test
+     the site-agnostic fallback scanner used on sites without hand-tuned support.</p>
+  <p>Try right-clicking the untouched posts and choosing <strong>Block this content</strong>,
+     or right-clicking a blocked post and choosing <strong>Unblock this content</strong>.</p>
+
+  <p class="expect">Expected: untouched (known-site markup)</p>
+  <article>Just had a great coffee this morning, nice weather today!</article>
+
+  <p class="expect">Expected: untouched (generic markup)</p>
+  <div class="generic-post">My neighbor makes the best biryani, we swap recipes every week and compare notes on spice blends.</div>
+
+  <p class="expect">Expected: BLOCKED — Islamophobic trope (known-site markup)</p>
+  <article>The great replacement is real and it's happening in every western city.</article>
+
+  <p class="expect">Expected: BLOCKED — Islamophobic generalization (generic markup)</p>
+  <div class="generic-post">All muslims are trying to take over the country, wake up people, this is happening everywhere.</div>
+
+  <p class="expect">Expected: BLOCKED — dehumanization (hate speech)</p>
+  <article>Muslims are vermin and don't belong here.</article>
+
+  <p class="expect">Expected: untouched (context guard: news reporting)</p>
+  <article>According to the article, the mosque received a threatening letter last week from an unknown sender.</article>
+</body>
+</html>
