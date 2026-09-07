@@ -92,7 +92,6 @@ omitted here since binary icon files aren't included in this scaffold.
 2. **Important**: run `/setprivacy` with BotFather and set it to **Disabled**
    for your bot, so it can actually read group messages (not just
    commands/mentions). Alternatively, make the bot a group admin.
-3. Add the bot to a test group.
 
 ```bash
 cd telegram-bot
@@ -103,18 +102,7 @@ npm start
 
 Send a flagged-style message in the group and watch it reply with context.
 
-## Demo script (for judges)
-
-1. Show the browser extension flagging a trope live in an X compose box.
-2. Switch to Telegram Web, show the same extension working there too — same
-   codebase, no platform-specific integration needed.
-3. Switch to a Telegram group chat, send a message from a phone/second
-   account, show the bot replying with context in real time.
-4. Emphasize: **nothing is deleted or blocked** — this sidesteps the
-   censorship debate entirely and focuses purely on giving people
-   information to make their own choice.
-
-## Known limitations (be upfront about these if asked)
+## Known limitations
 
 - The extension currently targets X and Telegram Web by domain; adding more
   sites just means adding domains to `manifest.json`'s `matches` field.
@@ -124,8 +112,4 @@ Send a flagged-style message in the group and watch it reply with context.
 - The Telegram bot currently replies in the group publicly; a gentler
   alternative for a v2 would be a private DM to the sender instead.
 - No on-device processing yet — all text goes to the backend, which calls
-  the Gemini API. Worth being transparent about this with users in a real
-  deployment (privacy policy, opt-in consent, etc).
-- The Gemini free tier has rate limits (requests per minute). Fine for a
-  live demo with a handful of people typing, but you'd want a paid tier or
-  a queueing strategy for real usage.
+  the Gemini API.
